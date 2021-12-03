@@ -1,7 +1,6 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 use std::str::FromStr;
 
-
 #[aoc_generator(day2)]
 fn input_generator(input: &str) -> Vec<Command> {
     input
@@ -44,17 +43,19 @@ impl Submarine {
         match command {
             Command::Forward(amount) => self.horizontal += amount,
             Command::Up(amount) => self.depth -= amount,
-            Command::Down(amount) => self.depth += amount
+            Command::Down(amount) => self.depth += amount,
         }
     }
 
     fn process_with_aim(&mut self, command: &Command) {
-      match command {
-          Command::Forward(amount) => (self.horizontal += amount, self.depth += self.aim * amount),
-          Command::Up(amount) => (self.aim -= amount, ()),
-          Command::Down(amount) => (self.aim += amount, ())
-      };
-  }
+        match command {
+            Command::Forward(amount) => {
+                (self.horizontal += amount, self.depth += self.aim * amount)
+            }
+            Command::Up(amount) => (self.aim -= amount, ()),
+            Command::Down(amount) => (self.aim += amount, ()),
+        };
+    }
 }
 
 enum Command {
@@ -64,17 +65,17 @@ enum Command {
 }
 
 impl FromStr for Command {
-  type Err = std::io::Error;
+    type Err = std::io::Error;
 
     fn from_str(string: &str) -> Result<Self, Self::Err> {
         let parts = string.split(" ").collect::<Vec<&str>>();
         let amount: u32 = parts[1].parse().unwrap();
 
         match parts[0] {
-          "forward" => Ok(Command::Forward(amount)),
-          "down" => Ok(Command::Down(amount)),
-          "up" => Ok(Command::Up(amount)),
-          _ => unreachable!()
-      } 
+            "forward" => Ok(Command::Forward(amount)),
+            "down" => Ok(Command::Down(amount)),
+            "up" => Ok(Command::Up(amount)),
+            _ => unreachable!(),
+        }
     }
 }
